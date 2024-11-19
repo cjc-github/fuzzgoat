@@ -11,6 +11,7 @@
 # Libraries
 *.lib
 *.a
+!libFuzzer_entropic.a
 *.la
 *.lo
 
@@ -27,13 +28,24 @@
 *.i*86
 *.x86_64
 *.hex
+
+# afl-gcc
 fuzzgoat
 fuzzgoat_ASAN
+
+# honggfuzz
 fuzzgoat_honggfuzz
 fuzzgoat_honggfuzz_ASAN
+
+# libfuzzer
 fuzzgoat_libfuzzer
+
+# radamsa
 fuzzgoat_radamsa
 fuzzgoat_radamsa_ASAN
+
+# entropic
+fuzzgoat_entropic
 
 crash-*
 

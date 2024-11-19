@@ -173,17 +173,26 @@ int main(int argc, char** argv)
 
 
 #ifdef FUZZING
-int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t length) {
-        json_value* value;
-        value = json_parse(Data, length);
 
-        if (value == NULL) {
+#ifdef __cplusplus
+extern "C" {
+#endif
+        int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t length) {
+                json_value* value;
+                // fix clang++ compiler
+                // value = json_parse(Data, length);
+                value = json_parse((const json_char*) Data, length);
+
+                if (value == NULL) {
+                        return 0;
+                }
+
+                process_value(value, 0);
+
+                json_value_free(value);
                 return 0;
         }
-
-        process_value(value, 0);
-
-        json_value_free(value);
-        return 0;
+#ifdef __cplusplus
 }
+#endif
 #endif

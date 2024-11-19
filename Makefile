@@ -15,7 +15,12 @@ AFL_CC = /home/test/xfuzz_work/AFLplusplus/afl-clang-fast # aflplusplus
 # AFL_CC = /home/test/xfuzz_work/AFL/afl-clang-fast # afl
 
 HFUZZ_CC = /home/test/xfuzz_work/honggfuzz/hfuzz_cc/hfuzz-gcc # honggfuzz
+
 LIBFUZZER_CC = clang # libfuzzer
+
+ENTROPIC_CC = clang++ # entropic
+# LIBFUZZER_CC = /home/test/xfuzz_work/clang+llvm-14.0.0-x86_64-linux-gnu-ubuntu-18.04/bin/clang # for entropic
+
 RADAMSA_CC = gcc # radamsa
 
 # 目标：fuzzgoat
@@ -29,6 +34,9 @@ fuzzgoat_afl: $(DEPS)
 # for libfuzzer
 fuzzgoat_libfuzzer: $(DEPS)
 	$(LIBFUZZER_CC) -w -o fuzzgoat_libfuzzer -pthread -DFUZZING $(CFLAGS) -fsanitize=fuzzer $^ $(LIBS)
+
+fuzzgoat_entropic: $(DEPS)
+	$(ENTROPIC_CC) -w -g -o fuzzgoat_entropic -pthread -DFUZZING $(CFLAGS) -fsanitize=fuzzer-no-link $^ ./libFuzzer.a  $(LIBS) # entropic
 
 # for honggfuzz
 fuzzgoat_honggfuzz: $(DEPS)
@@ -60,6 +68,10 @@ run_honggfuzz: fuzzgoat_honggfuzz
 run_libfuzzer: fuzzgoat_libfuzzer
 	./fuzzgoat_libfuzzer
 
+# run entropic
+run_entropic: fuzzgoat_entropic
+	./fuzzgoat_entropic
+
 # run radamsa
 run_radamsa: fuzzgoat_radamsa
 	./run_radamsa.sh
@@ -71,6 +83,8 @@ run_radamsa: fuzzgoat_radamsa
 clean:
 	rm -f fuzzgoat fuzzgoat_ASAN 
 	rm -rf fuzzgoat_libfuzzer 
+	rm -rf fuzzgoat_entropic
 	rm -rf fuzzgoat_honggfuzz fuzzgoat_honggfuzz_ASAN 
 	rm -rf fuzzgoat_radamsa fuzzgoat_radamsa_ASAN
+	rm -rf fuzzgoat_entropic
 	rm -rf crash-*
