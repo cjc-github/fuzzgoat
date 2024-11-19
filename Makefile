@@ -18,6 +18,7 @@ HFUZZ_CC = /home/test/xfuzz_work/honggfuzz/hfuzz_cc/hfuzz-gcc # honggfuzz
 
 LIBFUZZER_CC = clang # libfuzzer
 
+# entropic use clang generate error
 ENTROPIC_CC = clang++ # entropic
 # LIBFUZZER_CC = /home/test/xfuzz_work/clang+llvm-14.0.0-x86_64-linux-gnu-ubuntu-18.04/bin/clang # for entropic
 
@@ -35,8 +36,9 @@ fuzzgoat_afl: $(DEPS)
 fuzzgoat_libfuzzer: $(DEPS)
 	$(LIBFUZZER_CC) -w -o fuzzgoat_libfuzzer -pthread -DFUZZING $(CFLAGS) -fsanitize=fuzzer $^ $(LIBS)
 
+# for entropic
 fuzzgoat_entropic: $(DEPS)
-	$(ENTROPIC_CC) -w -g -o fuzzgoat_entropic -pthread -DFUZZING $(CFLAGS) -fsanitize=fuzzer-no-link $^ ./libFuzzer.a  $(LIBS) # entropic
+	$(ENTROPIC_CC) -w -g -o fuzzgoat_entropic -pthread -DFUZZING $(CFLAGS) -fsanitize=fuzzer-no-link $^ ./libFuzzer_entropic.a  $(LIBS) # entropic
 
 # for honggfuzz
 fuzzgoat_honggfuzz: $(DEPS)
