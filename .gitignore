@@ -29,6 +29,14 @@
 *.hex
 fuzzgoat
 fuzzgoat_ASAN
+fuzzgoat_honggfuzz
+fuzzgoat_honggfuzz_ASAN
+fuzzgoat_libfuzzer
+fuzzgoat_radamsa
+fuzzgoat_radamsa_ASAN
+
+crash-*
+
 
 # Debug files
 *.dSYM/

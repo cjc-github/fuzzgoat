@@ -105,6 +105,7 @@ static void process_value(json_value* value, int depth)
         }
 }
 
+#ifndef FUZZING
 int main(int argc, char** argv)
 {
         char* filename;
@@ -153,7 +154,7 @@ int main(int argc, char** argv)
 
         json = (json_char*)file_contents;
 
-        value = json_parse(json,file_size);
+        value = json_parse(json, file_size);
 
         if (value == NULL) {
                 fprintf(stderr, "Unable to parse data\n");
@@ -167,3 +168,22 @@ int main(int argc, char** argv)
         free(file_contents);
         return 0;
 }
+#endif
+
+
+
+#ifdef FUZZING
+int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t length) {
+        json_value* value;
+        value = json_parse(Data, length);
+
+        if (value == NULL) {
+                return 0;
+        }
+
+        process_value(value, 0);
+
+        json_value_free(value);
+        return 0;
+}
+#endif
