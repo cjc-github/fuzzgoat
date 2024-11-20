@@ -18,14 +18,13 @@ HFUZZ_CC = /home/test/xfuzz_work/honggfuzz/hfuzz_cc/hfuzz-gcc # honggfuzz
 
 LIBFUZZER_CC = clang # libfuzzer
 
-# entropic use clang generate error
+# entropic use the clang compiler will result in a compiler error
 ENTROPIC_CC = clang++ # entropic
-# LIBFUZZER_CC = /home/test/xfuzz_work/clang+llvm-14.0.0-x86_64-linux-gnu-ubuntu-18.04/bin/clang # for entropic
 
 RADAMSA_CC = gcc # radamsa
 
 # 目标：fuzzgoat
-all: fuzzgoat_afl fuzzgoat_libfuzzer fuzzgoat_honggfuzz  fuzzgoat_radamsa 
+all: fuzzgoat_afl fuzzgoat_libfuzzer fuzzgoat_entropic fuzzgoat_honggfuzz  fuzzgoat_radamsa 
 
 # for afl
 fuzzgoat_afl: $(DEPS)
