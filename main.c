@@ -159,7 +159,7 @@ int main(int argc, char** argv)
         if (value == NULL) {
                 fprintf(stderr, "Unable to parse data\n");
                 free(file_contents);
-                exit(1);
+                // exit(1);
         }
 
         process_value(value, 0);

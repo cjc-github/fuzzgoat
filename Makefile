@@ -6,7 +6,7 @@ LIBS = -lm
 
 # 定义编译器
 # AFL_CC = afl-gcc
-AFL_CC = /home/test/xfuzz_work/AFLplusplus/afl-clang-fast # aflplusplus
+AFL_CC = /home/test/workspace/AFLplusplus/afl-clang-fast # aflplusplus
 # AFL_CC = /home/test/xfuzz_work/aflfast/afl-gcc # aflfast
 # AFL_CC = /home/test/xfuzz_work/aflsmart/afl-gcc # aflsmart
 # AFL_CC = /home/test/xfuzz_work/Angora/bin/angora-clang # angora
@@ -26,10 +26,15 @@ RADAMSA_CC = gcc # radamsa
 # 目标：fuzzgoat
 all: fuzzgoat_afl fuzzgoat_libfuzzer fuzzgoat_entropic fuzzgoat_honggfuzz  fuzzgoat_radamsa 
 
+# for clang
+fuzzgoat: $(DEPS)
+	clang -o fuzzgoat $(CFLAGS) $^ $(LIBS)
+	clang $(ASAN) -o fuzzgoat_ASAN $(CFLAGS) $^ $(LIBS)
+
 # for afl
 fuzzgoat_afl: $(DEPS)
-	$(AFL_CC) -o fuzzgoat $(CFLAGS) $^ $(LIBS)
-	$(AFL_CC) $(ASAN) -o fuzzgoat_ASAN $(CFLAGS) $^ $(LIBS)
+	$(AFL_CC) -o fuzzgoat_afl $(CFLAGS) $^ $(LIBS)
+	$(AFL_CC) $(ASAN) -o fuzzgoat_ASAN_afl $(CFLAGS) $^ $(LIBS)
 
 # for libfuzzer
 fuzzgoat_libfuzzer: $(DEPS)
@@ -82,7 +87,8 @@ run_radamsa: fuzzgoat_radamsa
 
 
 clean:
-	rm -f fuzzgoat fuzzgoat_ASAN 
+	rm -rf fuzzgoat fuzzgoat_ASAN
+	rm -rf fuzzgoat_afl fuzzgoat_ASAN_afl
 	rm -rf fuzzgoat_libfuzzer 
 	rm -rf fuzzgoat_entropic
 	rm -rf fuzzgoat_honggfuzz fuzzgoat_honggfuzz_ASAN 

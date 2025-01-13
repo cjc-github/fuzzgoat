@@ -29,9 +29,13 @@
 *.x86_64
 *.hex
 
-# afl-gcc
+# gcc
 fuzzgoat
 fuzzgoat_ASAN
+
+# afl-gcc
+fuzzgoat_afl
+fuzzgoat_ASAN_afl
 
 # honggfuzz
 fuzzgoat_honggfuzz
